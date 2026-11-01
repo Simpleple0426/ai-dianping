@@ -1,0 +1,52 @@
+spring:
+  config:
+    import: optional:file:./application-local.yml,optional:file:./AI-dianping-backend/application-local.yml
+  application:
+    name: ai-dianping
+    #配置数据库连接信息
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/ai_dianping?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          min-idle: 1
+          time-between-eviction-runs: 10s
+      database: 0
+  jackson:
+    default-property-inclusion: non_null # JSON处理时忽略非空字段
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 60MB
+mybatis-plus:
+  type-aliases-package: com.aidianping.entity # 别名扫描包
+logging:
+  level:
+    com.aidianping: debug
+server:
+  port: 8081
+# 配置ai模型
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: ${AI_BASE_URL:https://api.openai.com/v1}
+      api-key: ${AI_API_KEY}
+      model-name: ${AI_MODEL}
+      log-requests: false
+      log-responses: false
+    streaming-chat-model:
+      base-url: ${AI_BASE_URL:https://api.openai.com/v1}
+      api-key: ${AI_API_KEY}
+      model-name: ${AI_MODEL}
+      log-requests: false
+      log-responses: false
